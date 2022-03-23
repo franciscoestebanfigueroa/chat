@@ -15,7 +15,6 @@ class Boton extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.4,
-        height: 30,
         color: Colors.indigo,
         child: TextButton(
           onPressed: function,

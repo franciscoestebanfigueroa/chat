@@ -4,16 +4,21 @@ import 'package:flutter/material.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: 400,
-        child: Center(
-          child: Column(
-            children: [
-              TextButton(onPressed: (){
-                Navigator.popAndPushNamed(context, 'login');
-              }, child: const Text('Login'))
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Container(
+          height: 400,
+          child: Center(
+            child: Column(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, 'login');
+                    },
+                    child: const Text('Login'))
+              ],
+            ),
           ),
         ),
       ),
