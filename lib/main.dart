@@ -1,4 +1,5 @@
-import 'package:chat/scr/scr.dart';
+
+import 'package:chat/statcs.dart/staticRouter.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,19 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'login',
-      routes: _Router.router,
+      initialRoute: 'home',
+      routes: StaticRouter.router,
       title: 'Chat',
     );
   }
 }
 
-class _Router {
-  static Map<String, Widget Function(BuildContext)> router = {
-    'home': (_) => Home(),
-    'login': (_) => Login(),
-    'newUser': (_) => NewUser(),
-    'chatPrivado': (_) => ChatPrivado(),
-    'chatList': (_) => ChatList()
-  };
-}

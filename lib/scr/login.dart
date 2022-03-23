@@ -8,16 +8,28 @@ class Login extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[300],
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Login'),
+        ),
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.all(20),
             height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: const [
-                Logo(),
-                FormulariosLogin(),
-                InferiorTextos(),
+            child: Stack(
+              children: [
+                Container(
+              child: FlutterLogo(
+                size: MediaQuery.of(context).size.width,
+              ),
+              //color: Colors.amber,
+            ),
+                Column(
+                  children: const [
+                    Logo(),
+                    FormulariosLogin(),
+                    InferiorTextos(),
+                  ],
+                ),
               ],
             ),
           ),
@@ -40,8 +52,13 @@ class FormulariosLogin extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 40),
           child: Column(
             children: [
-              const DataFromInput(),
-              const DataFromInput(),
+              const DataFromInput(
+                hint: 'Correo',
+
+              ),
+              const DataFromInput(
+                oculto: true,
+                hint: 'Password'),
               Boton(
                   txt: 'Ingresar',
                   function: () {
@@ -69,16 +86,19 @@ class InferiorTextos extends StatelessWidget {
 }
 
 class Logo extends StatelessWidget {
+ 
   const Logo({
+
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return const Expanded(
         flex: 3,
-        child: Container(
-          color: Colors.amber,
-        ));
+        child:CircleAvatar(
+          backgroundColor: Colors.white38,
+          radius: 70,
+          child:  Icon(Icons.people_outline_outlined,size: 100)) );
   }
 }
