@@ -1,9 +1,21 @@
-
+import 'package:chat/provider/provider_socket.dart';
 import 'package:chat/statcs.dart/staticRouter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyAppProvider());
+}
+
+class MyAppProvider extends StatelessWidget {
+  const MyAppProvider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => ProviderSocet())
+    ], child: const MyApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -20,4 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

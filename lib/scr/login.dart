@@ -1,14 +1,34 @@
+import 'package:chat/provider/provider_socket.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widget/widgets.dart';
 
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProviderSocet>(
+      context,
+    );
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: provider.estadoLine
+                  ? Icon(
+                      Icons.wifi,
+                      color: Colors.green[200],
+                    )
+                  : const Icon(
+                      Icons.wifi_off_sharp,
+                      color: Colors.red,
+                    ),
+            )
+          ],
           title: const Text('Login'),
         ),
         body: Container(

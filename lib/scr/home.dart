@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
               children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.popAndPushNamed(context, 'login');
+                      Navigator.popAndPushNamed(context, 'listChat');
                     },
                     child: const Text('Login'))
               ],
