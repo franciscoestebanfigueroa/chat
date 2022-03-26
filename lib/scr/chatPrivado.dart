@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
 import 'package:chat/scr/scr.dart';
@@ -33,11 +35,16 @@ class ChatPrivado extends StatelessWidget {
   }
 }
 
-class CajaLectura extends StatelessWidget {
+class CajaLectura extends StatefulWidget {
   const CajaLectura({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<CajaLectura> createState() => _CajaLecturaState();
+}
+
+class _CajaLecturaState extends State<CajaLectura> {
   @override
   Widget build(BuildContext context) {
     final modal = Provider.of<ProviderDataChat>(context);
@@ -49,36 +56,9 @@ class CajaLectura extends StatelessWidget {
             itemCount: modal.dataChat.txt.length,
             itemBuilder: (context, index) {
               return modal.dataChat.id == '0'
-                  ? _yo(modal, index)
+                  ? _Yo(modal, index)
                   : _tu(modal, index);
             }),
-      ),
-    );
-  }
-
-  Align _yo(ProviderDataChat modal, int index) {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: Chip(
-        backgroundColor: Colors.blue[400],
-        onDeleted: () {
-          modal.deleteTxt(index);
-          modal.dataChat.txt.forEach(print);
-
-          print(index);
-        },
-        label: Padding(
-          padding: const EdgeInsets.only(
-            right: 8,
-            left: 20,
-            top: 5,
-            bottom: 5,
-          ),
-          child: Text(
-            modal.dataChat.txt[index],
-            textAlign: TextAlign.right,
-          ),
-        ),
       ),
     );
   }
@@ -121,6 +101,7 @@ class _CajaTexto extends StatefulWidget {
 }
 
 TextEditingController controllerTF = TextEditingController();
+FocusNode focusNode = FocusNode();
 
 class _CajaTextoState extends State<_CajaTexto> {
   @override
@@ -134,16 +115,22 @@ class _CajaTextoState extends State<_CajaTexto> {
             child: TextField(
               // textInputAction: TextInputAction.go,
               //enableInteractiveSelection: true,
-
+              focusNode: focusNode,
               controller: controllerTF,
-              onSubmitted: (c) {},
+              onSubmitted: (c) {
+                if (modal.botonEnviar) {
+                  focusNode.requestFocus();
+                  sen(modal);
+                } else {
+                  focusNode.requestFocus();
+                }
+              },
               onChanged: (z) {
                 if (z.length > 0) {
-                  print('hay datos ${controllerTF.text}');
-
+                  // print('hay datos ${controllerTF.text}');
                   modal.botonEnviar = true;
                 } else {
-                  print('no hay dato');
+                  // print('no hay dato');
                   modal.botonEnviar = false;
                 }
               },
@@ -163,14 +150,54 @@ class _CajaTextoState extends State<_CajaTexto> {
                           } else {
                             modal.dataChat.id = '0';
                           }
-
-                          modal.addTxt(controllerTF.text.toString());
-                          controllerTF.clear();
-                          modal.botonEnviar = false;
+                          sen(modal);
                         }
                       : null,
                   child: Text(modal.botonEnviar ? 'Enviar' : '------')))
         ],
+      ),
+    );
+  }
+
+  void sen(ProviderDataChat modal) {
+    modal.addTxt(controllerTF.text.toString());
+    controllerTF.clear();
+    modal.botonEnviar = false;
+    setState(() {});
+  }
+}
+
+class _Yo extends StatefulWidget {
+  final index;
+  final modal;
+  _Yo(this.modal, this.index);
+
+  @override
+  State<_Yo> createState() => _YoState();
+}
+
+class _YoState extends State<_Yo> {
+  @override
+  Widget build(BuildContext context) {
+    final _random = Random();
+    return Padding(
+      padding: const EdgeInsets.only(top: 4, right: 3),
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: AnimatedContainer(
+          curve: Curves.bounceIn,
+          decoration: BoxDecoration(
+              color: Colors.blue[400], borderRadius: BorderRadius.circular(10)),
+          padding: EdgeInsets.symmetric(
+            horizontal: _random.nextInt(8).toDouble(),
+            vertical: 7,
+          ),
+          duration: const Duration(milliseconds: 200),
+          child: Text(
+            widget.modal.dataChat.txt[widget.index],
+            textAlign: TextAlign.right,
+          ),
+        ),
       ),
     );
   }
