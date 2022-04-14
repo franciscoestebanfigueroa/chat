@@ -15,6 +15,13 @@ class ChatPrivado extends StatelessWidget {
     //provider.dataChat = modal;
     return SafeArea(
       child: Scaffold(
+        // floatingActionButton: FloatingActionButton(onPressed: () {
+        //   for (int i = 0; i < provider.dataChat.txt.length; i++) {
+        //     print(provider.dataChat.id);
+        //     print(provider.dataChat.txt);
+        //   }
+        // }
+        //),
         appBar: AppBar(
           title: Text(provider.dataChat.nombre),
           leading: BackButton(
@@ -50,12 +57,13 @@ class _CajaLecturaState extends State<CajaLectura> {
     final modal = Provider.of<ProviderDataChat>(context);
     return Flexible(
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
         color: Colors.blue[50],
         child: ListView.builder(
             reverse: true,
             itemCount: modal.dataChat.txt.length,
             itemBuilder: (context, index) {
-              return modal.dataChat.id == '0'
+              return modal.dataChat.id[index] == '1'
                   ? _Yo(modal, index)
                   : _tu(modal, index);
             }),
@@ -63,27 +71,27 @@ class _CajaLecturaState extends State<CajaLectura> {
     );
   }
 
-  Align _tu(ProviderDataChat modal, int index) {
-    return Align(
-      alignment: Alignment.bottomLeft,
-      child: Chip(
-        backgroundColor: Colors.grey[400],
-        onDeleted: () {
-          modal.deleteTxt(index);
-          modal.dataChat.txt.forEach(print);
-
-          print(index);
-        },
-        label: Padding(
-          padding: const EdgeInsets.only(
-            right: 8,
-            left: 20,
-            top: 5,
-            bottom: 5,
-          ),
-          child: Text(
-            modal.dataChat.txt[index],
-            textAlign: TextAlign.right,
+  Widget _tu(ProviderDataChat modal, int index) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: Chip(
+          backgroundColor: Color(0xD44B9FEE),
+          onDeleted: () {
+            modal.deleteTxt(index);
+          },
+          label: Padding(
+            padding: const EdgeInsets.only(
+              right: 8,
+              left: 20,
+              top: 5,
+              bottom: 5,
+            ),
+            child: Text(
+              modal.dataChat.txt[index],
+              textAlign: TextAlign.right,
+            ),
           ),
         ),
       ),
@@ -102,6 +110,7 @@ class _CajaTexto extends StatefulWidget {
 
 TextEditingController controllerTF = TextEditingController();
 FocusNode focusNode = FocusNode();
+final rnd = Random();
 
 class _CajaTextoState extends State<_CajaTexto> {
   @override
@@ -145,11 +154,6 @@ class _CajaTextoState extends State<_CajaTexto> {
               label: GestureDetector(
                   onTap: modal.botonEnviar
                       ? () {
-                          if (modal.dataChat.id == '0') {
-                            modal.dataChat.id = '1';
-                          } else {
-                            modal.dataChat.id = '0';
-                          }
                           sen(modal);
                         }
                       : null,
@@ -160,10 +164,11 @@ class _CajaTextoState extends State<_CajaTexto> {
   }
 
   void sen(ProviderDataChat modal) {
-    modal.addTxt(controllerTF.text.toString());
+    modal.addTxt(controllerTF.text.toString(), rnd.nextInt(2).toString());
     controllerTF.clear();
     modal.botonEnviar = false;
-    setState(() {});
+    //setState(() {});
+    focusNode.requestFocus();
   }
 }
 
@@ -181,15 +186,16 @@ class _YoState extends State<_Yo> {
   Widget build(BuildContext context) {
     final _random = Random();
     return Padding(
-      padding: const EdgeInsets.only(top: 4, right: 3),
+      padding: const EdgeInsets.only(top: 4, right: 15),
       child: Align(
-        alignment: Alignment.bottomRight,
+        alignment: Alignment.bottomLeft,
         child: AnimatedContainer(
           curve: Curves.bounceIn,
           decoration: BoxDecoration(
-              color: Colors.blue[400], borderRadius: BorderRadius.circular(10)),
+              color: Color.fromARGB(255, 131, 194, 144),
+              borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.symmetric(
-            horizontal: _random.nextInt(8).toDouble(),
+            horizontal: _random.nextInt(8).toDouble() + 8,
             vertical: 7,
           ),
           duration: const Duration(milliseconds: 200),

@@ -5,7 +5,7 @@ class ProviderSocet extends ChangeNotifier {
   bool _estadoConect = false;
 
   ProviderSocet() {
-    estadoSocket();
+    // estadoSocket();
   }
 
   bool get estadoLine => _estadoConect;
@@ -15,12 +15,13 @@ class ProviderSocet extends ChangeNotifier {
   }
 
   void estadoSocket() {
+    print('init soket');
     io.Socket socket = io.io('http://localhost:3005');
 
     socket.onConnect(
       (_) {
         estadoLine = true;
-        print('conectado ');
+        print('conectadooo ');
         return;
       },
     );

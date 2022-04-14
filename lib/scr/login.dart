@@ -1,3 +1,4 @@
+import 'package:chat/provider/provider_api.dart';
 import 'package:chat/provider/provider_socket.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -103,7 +104,13 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
               const SizedBox(
                 height: 5,
               ),
-              Boton(txt: 'Ingresar', function: () {}),
+              Boton(
+                  txt: 'Ingresar',
+                  function: () {
+                    final provider =
+                        Provider.of<ProviderApi>(context, listen: false);
+                    provider.login(controllerCorreo.text, controllerPass.text);
+                  }),
             ],
           ),
         ));

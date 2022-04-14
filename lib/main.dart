@@ -1,5 +1,6 @@
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
+import 'package:chat/provider/provider_api.dart';
 import 'package:chat/provider/provider_socket.dart';
 import 'package:chat/statcs.dart/staticRouter.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,10 @@ class MyAppProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => ProviderSocet()),
+      ChangeNotifierProvider(create: (context) => ProviderApi()),
       ChangeNotifierProvider(
         create: (context) => ProviderDataChat(
-            Usuario(id: '', nombre: '', txt: [], estado: false)),
+            Usuario(id: [], nombre: '', txt: [], estado: false)),
       )
     ], child: const MyApp());
   }
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'chatList',
+      initialRoute: 'login',
       routes: StaticRouter.router,
       title: 'Chat',
     );

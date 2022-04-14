@@ -1,6 +1,6 @@
 class Usuario {
   final String nombre;
-  String id;
+  List id;
   List txt;
   bool estado;
 
