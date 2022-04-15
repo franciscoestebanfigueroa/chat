@@ -23,15 +23,15 @@ class ProviderDataChat extends ChangeNotifier {
   }
 
   addTxt(String chat, String id) {
-    this._usuario.txt.insert(0, chat);
-    this._usuario.id.insert(0, id);
+    // this._usuario.txt.insert(0, chat);
+    // this._usuario.id.insert(0, id);
     notifyListeners();
   }
 
   deleteTxt(int id) {
     print(id);
-    this._usuario.txt.removeRange(id, id + 1);
-    this._usuario.id.removeRange(id, id + 1);
+    // this._usuario.txt.removeRange(id, id + 1);
+    // this._usuario.id.removeRange(id, id + 1);
     notifyListeners();
   }
 }

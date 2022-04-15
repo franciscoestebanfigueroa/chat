@@ -5,7 +5,7 @@ class ProviderSocet extends ChangeNotifier {
   bool _estadoConect = false;
 
   ProviderSocet() {
-    // estadoSocket();
+    estadoSocket();
   }
 
   bool get estadoLine => _estadoConect;
@@ -16,7 +16,7 @@ class ProviderSocet extends ChangeNotifier {
 
   void estadoSocket() {
     print('init soket');
-    io.Socket socket = io.io('http://localhost:3005');
+    io.Socket socket = io.io('http://localhost:3000');
 
     socket.onConnect(
       (_) {

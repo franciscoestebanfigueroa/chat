@@ -7,19 +7,19 @@ import 'package:provider/provider.dart';
 class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Usuario> lista = [
-      Usuario(
-          txt: [
-            'hola',
-            'mundo',
-            'que haces',
-          ],
-          nombre: 'Pancho',
-          id: ['1', '0', '1']),
-      Usuario(txt: [], nombre: 'Lara', id: ['2'], estado: true),
-      Usuario(txt: [], nombre: 'Caro', id: ['3']),
-      Usuario(txt: [], nombre: 'Esteban', id: ['4'])
-    ];
+    List<Usuario> lista = [];
+    //   Usuario(
+    //       txt: [
+    //         'hola',
+    //         'mundo',
+    //         'que haces',
+    //       ],
+    //       nombre: 'Pancho',
+    //       id: ['1', '0', '1']),
+    //   Usuario(txt: [], nombre: 'Lara', id: ['2'], estado: true),
+    //   Usuario(txt: [], nombre: 'Caro', id: ['3']),
+    //   Usuario(txt: [], nombre: 'Esteban', id: ['4'])
+    // ];
     final onLine = Provider.of<ProviderSocet>(context);
     return SafeArea(
       child: Scaffold(
@@ -65,9 +65,9 @@ class ChatList extends StatelessWidget {
         modal.dataChat = usr;
       },
       title: Text(usr.nombre),
-      subtitle: Text(usr.estado ? 'Desconectado' : 'Conectado'),
+      subtitle: Text(usr.online ? 'Desconectado' : 'Conectado'),
       leading: CircleAvatar(
-          backgroundColor: usr.estado ? Colors.red[400] : Colors.green[300],
+          backgroundColor: usr.online ? Colors.red[400] : Colors.green[300],
           child: Text(usr.nombre.substring(0, 2).toUpperCase())),
     );
   }

@@ -61,9 +61,9 @@ class _CajaLecturaState extends State<CajaLectura> {
         color: Colors.blue[50],
         child: ListView.builder(
             reverse: true,
-            itemCount: modal.dataChat.txt.length,
+            itemCount: modal.dataChat.nombre.length, //ver
             itemBuilder: (context, index) {
-              return modal.dataChat.id[index] == '1'
+              return modal.dataChat.nombre[index] == '1'
                   ? _Yo(modal, index)
                   : _tu(modal, index);
             }),
@@ -89,7 +89,7 @@ class _CajaLecturaState extends State<CajaLectura> {
               bottom: 5,
             ),
             child: Text(
-              modal.dataChat.txt[index],
+              modal.dataChat.nombre[index],
               textAlign: TextAlign.right,
             ),
           ),

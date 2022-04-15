@@ -20,7 +20,7 @@ class MyAppProvider extends StatelessWidget {
       ChangeNotifierProvider(create: (context) => ProviderApi()),
       ChangeNotifierProvider(
         create: (context) => ProviderDataChat(
-            Usuario(id: [], nombre: '', txt: [], estado: false)),
+            Usuario(uid: '', nombre: '', online: false, email: '')),
       )
     ], child: const MyApp());
   }
