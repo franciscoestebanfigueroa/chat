@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Boton extends StatelessWidget {
   final String txt;
-  final VoidCallback function;
+  final VoidCallback? function;
   Boton({
     required this.txt,
     Key? key,
-    required this.function,
+    this.function,
   }) : super(key: key);
 
   @override

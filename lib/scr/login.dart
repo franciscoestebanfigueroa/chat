@@ -1,3 +1,4 @@
+import 'package:chat/alertas/alertas.dart';
 import 'package:chat/provider/provider_api.dart';
 import 'package:chat/provider/provider_socket.dart';
 import 'package:flutter/material.dart';
@@ -71,11 +72,12 @@ class _FormulariosLogin extends StatefulWidget {
 }
 
 class _FormulariosLoginState extends State<_FormulariosLogin> {
+  TextEditingController controllerCorreo = TextEditingController();
+  TextEditingController controllerPass = TextEditingController();
   bool verPass = true;
   @override
   Widget build(BuildContext context) {
-    TextEditingController controllerCorreo = TextEditingController();
-    TextEditingController controllerPass = TextEditingController();
+    final provider = Provider.of<ProviderApi>(context);
     return Expanded(
         flex: 6,
         child: Container(
@@ -92,8 +94,9 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
               DataFromInput(
                   textControler: controllerPass,
                   callback: () {
-                    verPass = !verPass;
-                    setState(() {});
+                    setState(() {
+                      verPass = !verPass;
+                    });
                     print(verPass);
                   },
                   oculto: verPass,
@@ -105,12 +108,20 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                 height: 5,
               ),
               Boton(
-                  txt: 'Ingresar',
-                  function: () {
-                    final provider =
-                        Provider.of<ProviderApi>(context, listen: false);
-                    provider.login(controllerCorreo.text, controllerPass.text);
-                  }),
+                txt: 'Ingresar',
+                function: provider.estadoBoton
+                    ? () async {
+                        final response = await provider.login(
+                            controllerCorreo.text, controllerPass.text);
+                        if (response) {
+                          Navigator.pushReplacementNamed(context, 'chatList');
+                        } else {
+                          alertaCustom(
+                              context, 'Login', 'Error de Credenciales');
+                        }
+                      }
+                    : null,
+              ),
             ],
           ),
         ));
