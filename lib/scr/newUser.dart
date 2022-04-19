@@ -1,4 +1,7 @@
+import 'package:chat/provider/provider_Usuario.dart';
+import 'package:chat/provider/provider_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widget/widgets.dart';
 
@@ -49,13 +52,13 @@ class _FormulariosLogin extends StatefulWidget {
   State<_FormulariosLogin> createState() => _FormulariosLoginState();
 }
 
+    final controllerCorreo = TextEditingController();
+    final controllerPass = TextEditingController();
+    final controllerNombre = TextEditingController();
 class _FormulariosLoginState extends State<_FormulariosLogin> {
   bool verPass = true;
   @override
   Widget build(BuildContext context) {
-    final controllerCorreo = TextEditingController();
-    final controllerPass = TextEditingController();
-    final controllerNombre = TextEditingController();
     return Expanded(
         flex: 6,
         child: Container(
@@ -88,7 +91,9 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
               ),
               Boton(
                   txt: 'Crear Usuario',
-                  function: () {
+                  function: () async{
+                    final provider=Provider.of<ProviderApi>(context,listen: false);
+                    final response = await provider.newUser(controllerNombre.text, controllerCorreo.text, controllerPass.text);
                     print('CREAR USUARIO ${controllerNombre.text}');
                   }),
             ],
