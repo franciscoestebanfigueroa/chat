@@ -37,7 +37,6 @@ class ProviderApi extends ChangeNotifier {
   Future<bool> login(String correo, String pass) async {
     Map<String, String> data = {"email": correo, 'password': pass};
     //final data = {"email": "pancho@pancho.com", 'password': '123456'};
-   
 
     estadoBoton = false;
     await Future.delayed(const Duration(seconds: 1));
@@ -49,8 +48,8 @@ class ProviderApi extends ChangeNotifier {
     print(response.statusCode);
 
     if (response.statusCode == 200) {
-     // print(response.body);
-            final user = loginResponseFromJson(response.body);
+      // print(response.body);
+      final user = loginResponseFromJson(response.body);
       usuario = user.usuario;
       print(usuario.nombre);
       print(usuario.email);
@@ -68,41 +67,40 @@ class ProviderApi extends ChangeNotifier {
     }
   }
 //
- // Future guardarToken(String token) async {
- //   await _storage.write(key: 'token', value: token);
- //   String? value = await _storage.read(key: 'token');
- //   print('token guardado $value');
- // }
+  // Future guardarToken(String token) async {
+  //   await _storage.write(key: 'token', value: token);
+  //   String? value = await _storage.read(key: 'token');
+  //   print('token guardado $value');
+  // }
 //
- // Future eliminarToken() async {
- //   await _storage.delete(key: 'token');
- // }
+  // Future eliminarToken() async {
+  //   await _storage.delete(key: 'token');
+  // }
 
+  Future newUser(String nombre, String correo, String password) async {
+    estadoBoton = false;
+    await Future.delayed(const Duration(seconds: 1));
 
+    final data = {'nombre': nombre, 'email': correo, 'password': password};
+    http.Response response = await http.post(
+      Env.uriLocalNew,
+      body: jsonEncode(data),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final user = loginResponseFromJson(response.body);
+      print(user.usuario.nombre);
+      print(user.newToken);
+      estadoBoton = true;
+      //guardarToken(user.newToken);
+      return true;
+    } else {
+      estadoBoton = true;
+      print(response.statusCode);
+      final error = jsonDecode(response.body);
+      print(error);
 
-Future<bool> newUser(String nombre,String correo,String password) async{
-print('crando user $nombre' );
-
-
-
-final data={
- 'nombre':nombre,
- 'email':correo,
- 'password':password
-};
-http.Response response= await http.post(
-Env.uriLocalNew,
-body: jsonEncode(data),
-headers: {'Content-Type': 'application/json'},
-
-);
-
-print(response.statusCode);
-  return true;
-}
-
-
-
-
-
+      return error['msg'];
+    }
+  }
 }

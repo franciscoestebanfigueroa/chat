@@ -1,3 +1,4 @@
+import 'package:chat/alertas/alertas.dart';
 import 'package:chat/provider/provider_Usuario.dart';
 import 'package:chat/provider/provider_api.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +53,15 @@ class _FormulariosLogin extends StatefulWidget {
   State<_FormulariosLogin> createState() => _FormulariosLoginState();
 }
 
-    final controllerCorreo = TextEditingController();
-    final controllerPass = TextEditingController();
-    final controllerNombre = TextEditingController();
+final controllerCorreo = TextEditingController();
+final controllerPass = TextEditingController();
+final controllerNombre = TextEditingController();
+
 class _FormulariosLoginState extends State<_FormulariosLogin> {
   bool verPass = true;
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProviderApi>(context);
     return Expanded(
         flex: 6,
         child: Container(
@@ -90,12 +93,23 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                 height: 20,
               ),
               Boton(
-                  txt: 'Crear Usuario',
-                  function: () async{
-                    final provider=Provider.of<ProviderApi>(context,listen: false);
-                    final response = await provider.newUser(controllerNombre.text, controllerCorreo.text, controllerPass.text);
-                    print('CREAR USUARIO ${controllerNombre.text}');
-                  }),
+                txt: 'Crear Usuario',
+                function: provider.estadoBoton
+                    ? () async {
+                        final response = await provider.newUser(
+                            controllerNombre.text,
+                            controllerCorreo.text,
+                            controllerPass.text);
+                        if (response == true) {
+                          alertaCustom(context, 'Crear Usuario',
+                              'Usuario creado con exito');
+                        } else {
+                          alertaCustom(context, 'Crear Usuario',
+                              'No se pudo crear el Usuario \n $response');
+                        }
+                      }
+                    : null,
+              ),
             ],
           ),
         ));
