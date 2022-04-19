@@ -14,26 +14,26 @@ String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
 class LoginResponse {
   LoginResponse({
     required this.ok,
-    required this.mge,
+    required this.msg,
     required this.usuario,
     required this.newToken,
   });
 
   bool ok;
-  String mge;
+  String msg;
   Usuario usuario;
   String newToken;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
         ok: json["ok"],
-        mge: json["mge"],
+        msg: json["msg"],
         usuario: Usuario.fromJson(json["usuario"]),
         newToken: json["newToken"],
       );
 
   Map<String, dynamic> toJson() => {
         "ok": ok,
-        "mge": mge,
+        "mge": msg,
         "usuario": usuario.toJson(),
         "newToken": newToken,
       };

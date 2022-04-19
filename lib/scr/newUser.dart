@@ -1,5 +1,5 @@
 import 'package:chat/alertas/alertas.dart';
-import 'package:chat/provider/provider_Usuario.dart';
+
 import 'package:chat/provider/provider_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -101,8 +101,9 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                             controllerCorreo.text,
                             controllerPass.text);
                         if (response == true) {
-                          alertaCustom(context, 'Crear Usuario',
-                              'Usuario creado con exito');
+                          // alertaCustom(context, 'Crear Usuario',
+                          //     'Usuario creado con exito');
+                          Navigator.pushNamed(context, 'chatList');
                         } else {
                           alertaCustom(context, 'Crear Usuario',
                               'No se pudo crear el Usuario \n $response');
