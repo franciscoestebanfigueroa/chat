@@ -103,4 +103,42 @@ class ProviderApi extends ChangeNotifier {
       return error['msg'];
     }
   }
+
+
+  Future<bool> isItokenValidate()async{
+
+    await Future.delayed(Duration(seconds: 3));
+    return false;
+
+    //String token = await _storage.read('token);
+    http.Response response= await http.get(
+      Env.uriLocalreNew,
+      headers: {
+        'Content-Type': 'application/json',
+        //'x-token':token
+      },
+    ); 
+
+if(response.statusCode==200){
+
+  final responsebody=loginResponseFromJson(response.body);
+  
+  //GuardarToken(responsebody.newToken);
+  
+  return true;
+
+}
+
+
+else{
+  return false;
+}
+
+
+
+
+
+return true;
+
+  } 
 }
