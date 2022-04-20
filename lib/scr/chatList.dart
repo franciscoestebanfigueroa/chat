@@ -1,6 +1,8 @@
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
+import 'package:chat/provider/provider_api.dart';
 import 'package:chat/provider/provider_socket.dart';
+import 'package:chat/scr/scr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,18 @@ class ChatList extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           actions: [
+            TextButton(
+                onPressed: () {
+                  //  ProviderApi().eliminarToken();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return Login();
+                  }));
+                },
+                child: Icon(
+                  Icons.power_off,
+                  color: Colors.red,
+                )),
             Icon(
               Icons.online_prediction,
               color: onLine.estadoLine ? Colors.green : Colors.red,

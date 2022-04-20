@@ -55,7 +55,7 @@ class ProviderApi extends ChangeNotifier {
       print(usuario.email);
       print(usuario.uid);
 
-//      guardarToken(user.newToken);
+      //guardarToken(user.newToken);
 
       estadoBoton = true;
       return true;
@@ -66,7 +66,7 @@ class ProviderApi extends ChangeNotifier {
       return false;
     }
   }
-//
+
   // Future guardarToken(String token) async {
   //   await _storage.write(key: 'token', value: token);
   //   String? value = await _storage.read(key: 'token');
@@ -92,7 +92,7 @@ class ProviderApi extends ChangeNotifier {
       print(user.usuario.nombre);
       print(user.newToken);
       estadoBoton = true;
-      //guardarToken(user.newToken);
+      // guardarToken(user.newToken);
       return true;
     } else {
       estadoBoton = true;
@@ -104,41 +104,28 @@ class ProviderApi extends ChangeNotifier {
     }
   }
 
-
-  Future<bool> isItokenValidate()async{
-
+  Future<bool> isItokenValidate() async {
     await Future.delayed(Duration(seconds: 3));
     return false;
 
-    //String token = await _storage.read('token);
-    http.Response response= await http.get(
-      Env.uriLocalreNew,
-      headers: {
-        'Content-Type': 'application/json',
-        //'x-token':token
-      },
-    ); 
+    //  String? token = await _storage.read(key: 'token');
+    //  if (token == null) {
+    //    return false;
+    //   }
+    //   http.Response response = await http.get(
+    //     Env.uriLocalreNew,
+    //     headers: {'Content-Type': 'application/json', 'x-token': token},
+    //   );
+    // print(response.statusCode);
+    // if (response.statusCode == 200) {
+    //   print(response.body);
+    //   final responsebody = loginResponseFromJson(response.body);
 
-if(response.statusCode==200){
+    // await guardarToken(responsebody.newToken);
 
-  final responsebody=loginResponseFromJson(response.body);
-  
-  //GuardarToken(responsebody.newToken);
-  
-  return true;
-
-}
-
-
-else{
-  return false;
-}
-
-
-
-
-
-return true;
-
-  } 
+    return true;
+    // } else {
+    //   return false;
+    //   }
+  }
 }
