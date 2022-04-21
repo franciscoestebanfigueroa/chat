@@ -1,3 +1,4 @@
+import 'package:chat/statcs.dart/env.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -16,7 +17,15 @@ class ProviderSocet extends ChangeNotifier {
 
   void estadoSocket() {
     print('init soket');
-    io.Socket socket = io.io('http://localhost:3000');
+
+    io.Socket socket = io.io(
+      Env.uriSocket,
+      io.OptionBuilder()
+          .setTransports(['websocket'])
+          .enableAutoConnect()
+          //.disableAutoConnect() // for Flutter or Dart VM
+          .build(),
+    );
 
     socket.onConnect(
       (_) {
@@ -26,6 +35,6 @@ class ProviderSocet extends ChangeNotifier {
       },
     );
 
-    socket.onDisconnect((_) => estadoLine = false);
+    socket.onDisconnect((_) => {estadoLine = false});
   }
 }

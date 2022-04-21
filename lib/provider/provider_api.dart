@@ -41,7 +41,7 @@ class ProviderApi extends ChangeNotifier {
     estadoBoton = false;
     await Future.delayed(const Duration(seconds: 1));
     final response = await http.post(
-      Env.uriLocal,
+      Env.uriLogin,
       body: jsonEncode(data),
       headers: {'Content-Type': 'application/json'},
     );
@@ -83,7 +83,7 @@ class ProviderApi extends ChangeNotifier {
 
     final data = {'nombre': nombre, 'email': correo, 'password': password};
     http.Response response = await http.post(
-      Env.uriLocalNew,
+      Env.uriNewUser,
       body: jsonEncode(data),
       headers: {'Content-Type': 'application/json'},
     );

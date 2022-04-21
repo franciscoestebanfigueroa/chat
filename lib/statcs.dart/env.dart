@@ -1,8 +1,12 @@
-class Env {
-  static String dir = '10.0.2.2';
-  static Uri uriLocal = Uri.parse('http://$dir:3000/api/login/');
-  static Uri uriLocalNew = Uri.parse('http://$dir:3000/api/login/new/');
-  static Uri uriLocalreNew = Uri.parse('http://$dir:3000/api/login/renew/');
+import 'dart:io';
 
-  static Uri uriEmu = Uri.http('10.0.2.2:3000', '/api/login/');
+class Env {
+  //static String dir = Platform.isAndroid ? '10.0.2.2' : 'localhost';
+  static String dir = 'localhost';
+  //static String dir = '10.0.2.2';
+  static Uri uriLogin = Uri.parse('http://$dir:3000/api/login/');
+  static Uri uriNewUser = Uri.parse('http://$dir:3000/api/login/new/');
+  static Uri uriReNewToken = Uri.parse('http://$dir:3000/api/login/renew/');
+
+  static String uriSocket = 'http://$dir:3000';
 }
