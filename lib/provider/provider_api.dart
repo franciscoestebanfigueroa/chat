@@ -11,6 +11,15 @@ class ProviderApi extends ChangeNotifier {
   //final _storage = FlutterSecureStorage();
   late Usuario usuario; //
   bool _estadoBoton = true;
+  static String _tokenPuro='';
+
+   set _token(String token){
+    _tokenPuro=token;
+    notifyListeners();
+    
+  }
+  static String get token=>_tokenPuro;
+
 
 //metodos estaticos dentro de la clase, no los voy a tener que instanciar
 //serian getter
@@ -54,6 +63,8 @@ class ProviderApi extends ChangeNotifier {
       print(usuario.nombre);
       print(usuario.email);
       print(usuario.uid);
+      print(user.newToken);
+      _token=user.newToken;
 
       //guardarToken(user.newToken);
 

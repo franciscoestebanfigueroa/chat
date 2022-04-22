@@ -1,5 +1,7 @@
+import 'package:chat/provider/provider_api.dart';
 import 'package:chat/statcs.dart/env.dart';
 import 'package:flutter/material.dart';
+
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class ProviderSocet extends ChangeNotifier {
@@ -16,21 +18,34 @@ class ProviderSocet extends ChangeNotifier {
   }
 
   void estadoSocket() {
+    
     print('init soket');
 
     io.Socket socket = io.io(
       Env.uriSocket,
-      io.OptionBuilder()
+      //{
+      //  'transports':['websocket'],
+      //  'autoConnect':true,
+      //  'forceNew':true,
+      //  'extraHeaders':{
+      //    'x-token':''
+      //  }
+
+      //}
+      io.OptionBuilder()   
+          .enableForceNew()       
           .setTransports(['websocket'])
           .enableAutoConnect()
-          //.disableAutoConnect() // for Flutter or Dart VM
+          .setExtraHeaders({'x-token':ProviderApi.token})
           .build(),
+        
     );
 
     socket.onConnect(
       (_) {
         estadoLine = true;
         print('conectadooo ');
+        
         return;
       },
     );

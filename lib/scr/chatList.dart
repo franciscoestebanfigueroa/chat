@@ -1,6 +1,6 @@
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
-import 'package:chat/provider/provider_api.dart';
+
 import 'package:chat/provider/provider_socket.dart';
 import 'package:chat/scr/scr.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+   
     List<Usuario> lista = [];
     //   Usuario(
     //       txt: [
