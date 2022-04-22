@@ -1,8 +1,10 @@
 import 'package:chat/alertas/alertas.dart';
 
 import 'package:chat/provider/provider_api.dart';
+import 'package:chat/provider/provider_socket.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 import '../widget/widgets.dart';
 
@@ -101,6 +103,12 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                             controllerCorreo.text,
                             controllerPass.text);
                         if (response == true) {
+                          final socket = Provider.of<ProviderSocet>(context,
+                              listen: false);
+                          socket.estadoSocket();
+                          controllerCorreo.clear();
+                          controllerNombre.clear();
+                          controllerPass.clear();
                           // alertaCustom(context, 'Crear Usuario',
                           //     'Usuario creado con exito');
                           Navigator.pushNamed(context, 'chatList');

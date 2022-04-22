@@ -18,7 +18,6 @@ class ProviderSocet extends ChangeNotifier {
   }
 
   void estadoSocket() {
-    
     print('init soket');
 
     io.Socket socket = io.io(
@@ -32,20 +31,19 @@ class ProviderSocet extends ChangeNotifier {
       //  }
 
       //}
-      io.OptionBuilder()   
-          .enableForceNew()       
+      io.OptionBuilder()
+          .enableForceNew()
           .setTransports(['websocket'])
           .enableAutoConnect()
-          .setExtraHeaders({'x-token':ProviderApi.token})
+          .setExtraHeaders({'x-token': ProviderApi.tokenPuro})
           .build(),
-        
     );
 
     socket.onConnect(
       (_) {
         estadoLine = true;
         print('conectadooo ');
-        
+
         return;
       },
     );

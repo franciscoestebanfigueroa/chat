@@ -1,15 +1,16 @@
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
+import 'package:chat/provider/provider_api.dart';
 
 import 'package:chat/provider/provider_socket.dart';
 import 'package:chat/scr/scr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-   
     List<Usuario> lista = [];
     //   Usuario(
     //       txt: [
@@ -30,6 +31,10 @@ class ChatList extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () {
+                  final provider =
+                      Provider.of<ProviderApi>(context, listen: false);
+                  provider.token = '';
+                  onLine.estadoSocket();
                   //  ProviderApi().eliminarToken();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
