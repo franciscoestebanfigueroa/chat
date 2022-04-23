@@ -47,7 +47,7 @@ class ProviderSocet extends ChangeNotifier {
         return;
       },
     );
-
+    socket.emit('jwt', {ProviderApi.tokenPuro});
     socket.onDisconnect((_) => {estadoLine = false});
   }
 }

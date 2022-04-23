@@ -114,8 +114,11 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                         final response = await provider.login(
                             controllerCorreo.text, controllerPass.text);
                         if (response) {
-                          final conectarSocket=Provider.of<ProviderSocet>(context,listen: false);
+                          final conectarSocket = Provider.of<ProviderSocet>(
+                              context,
+                              listen: false);
                           conectarSocket.estadoSocket();
+
                           Navigator.pushReplacementNamed(context, 'chatList');
                         } else {
                           alertaCustom(
