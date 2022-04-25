@@ -9,9 +9,7 @@ import '../widget/widgets.dart';
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProviderSocet>(
-      context,
-    );
+    final provider = Provider.of<ProviderSocket>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -112,12 +110,18 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                 function: provider.estadoBoton
                     ? () async {
                         final response = await provider.login(
-                            controllerCorreo.text, controllerPass.text);
+
+                            //controllerCorreo.text,
+
+                            //controllerPass.text);
+                            'pancho@pancho.com',
+                            '123456');
                         if (response) {
-                          final conectarSocket = Provider.of<ProviderSocet>(
+                          final conectarSocket = Provider.of<ProviderSocket>(
                               context,
                               listen: false);
-                          conectarSocket.estadoSocket();
+                          conectarSocket.conectar = true;
+                          conectarSocket.conectarSocket();
 
                           Navigator.pushReplacementNamed(context, 'chatList');
                         } else {

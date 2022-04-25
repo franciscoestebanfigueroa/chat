@@ -24,24 +24,27 @@ class ChatList extends StatelessWidget {
     //   Usuario(txt: [], nombre: 'Caro', id: ['3']),
     //   Usuario(txt: [], nombre: 'Esteban', id: ['4'])
     // ];
-    final onLine = Provider.of<ProviderSocet>(context);
+    final onLine = Provider.of<ProviderSocket>(context);
+    final providerApi = Provider.of<ProviderApi>(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           actions: [
             TextButton(
                 onPressed: () {
-                  final provider =
-                      Provider.of<ProviderApi>(context, listen: false);
-                  provider.token = '';
-                  onLine.estadoSocket();
+                  //onLine.estadoLine = false;
+                  onLine.conectar = false;
+                  onLine.conectarSocket();
+                  // onLine.estadoLine = false;
+
                   //  ProviderApi().eliminarToken();
+//
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
                     return Login();
                   }));
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.power_off,
                   color: Colors.red,
                 )),
@@ -54,14 +57,17 @@ class ChatList extends StatelessWidget {
             ),
           ],
           title: Row(
-            children: const [
+            children: [
               CircleAvatar(
-                child: Text('FF'),
+                child: Text(providerApi.usuario.nombre
+                    .toString()
+                    .substring(0, 2)
+                    .toUpperCase()),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
-              Text('Francisco Figueroa')
+              Text(providerApi.usuario.nombre.toString().toUpperCase())
             ],
           ),
         ),

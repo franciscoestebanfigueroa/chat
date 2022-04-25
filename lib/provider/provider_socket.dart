@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-class ProviderSocet extends ChangeNotifier {
+class ProviderSocket extends ChangeNotifier {
   bool _estadoConect = false;
-
-  ProviderSocet() {
-    estadoSocket();
+  bool _conectar = false;
+  ProviderSocket() {
+    //estadoSocket();
   }
 
   bool get estadoLine => _estadoConect;
@@ -17,7 +17,14 @@ class ProviderSocet extends ChangeNotifier {
     notifyListeners();
   }
 
-  void estadoSocket() {
+  set conectar(bool conectar) {
+    _conectar = conectar;
+    notifyListeners();
+  }
+
+  bool get conectar => _conectar;
+
+  void conectarSocket() {
     print('init soket');
 
     io.Socket socket = io.io(
@@ -31,23 +38,32 @@ class ProviderSocet extends ChangeNotifier {
       //  }
 
       //}
-      io.OptionBuilder()
-          .enableForceNew()
+      io.OptionBuilder() //.enableForceNew()
           .setTransports(['websocket'])
-          .enableAutoConnect()
-          .setExtraHeaders({'x-token': ProviderApi.tokenPuro})
-          .build(),
+          //.enableAutoConnect()
+          .setExtraHeaders({'x-token': ProviderApi.tokenPuro}).build(),
     );
 
+    if (conectar == false) {
+      print('en if conectar false');
+      socket.emit('online', false);
+      socket.disconnect();
+      return;
+    } else {
+      socket.connect();
+    }
     socket.onConnect(
       (_) {
         estadoLine = true;
         print('conectadooo ');
-
-        return;
+        socket.emit('online', true);
+        // return;
       },
     );
-    socket.emit('jwt', {ProviderApi.tokenPuro});
-    socket.onDisconnect((_) => {estadoLine = false});
+    socket.onDisconnect((_) {
+      //se ejecuta cuando el servidor de desconecta
+      print('desconectand');
+      estadoLine = false;
+    });
   }
 }

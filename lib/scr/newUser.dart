@@ -103,9 +103,9 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                             controllerCorreo.text,
                             controllerPass.text);
                         if (response == true) {
-                          final socket = Provider.of<ProviderSocet>(context,
+                          final socket = Provider.of<ProviderSocket>(context,
                               listen: false);
-                          socket.estadoSocket();
+                          socket.conectarSocket();
                           controllerCorreo.clear();
                           controllerNombre.clear();
                           controllerPass.clear();

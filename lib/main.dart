@@ -16,7 +16,7 @@ class MyAppProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => ProviderSocet()),
+      ChangeNotifierProvider(create: (context) => ProviderSocket()),
       ChangeNotifierProvider(create: (context) => ProviderApi()),
       ChangeNotifierProvider(
         create: (context) => ProviderDataChat(

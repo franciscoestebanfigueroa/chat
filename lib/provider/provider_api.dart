@@ -59,9 +59,9 @@ class ProviderApi extends ChangeNotifier {
       final user = loginResponseFromJson(response.body);
       usuario = user.usuario;
       print(usuario.nombre);
-      print(usuario.email);
-      print(usuario.uid);
-      print(user.newToken);
+      //  print(usuario.email);
+      //  print(usuario.uid);
+      //  print(user.newToken);
       token = user.newToken;
 
       //guardarToken(user.newToken);
