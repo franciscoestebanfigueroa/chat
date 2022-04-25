@@ -61,7 +61,7 @@ class ProviderApi extends ChangeNotifier {
       print(usuario.nombre);
       //  print(usuario.email);
       //  print(usuario.uid);
-      //  print(user.newToken);
+      print(user.newToken);
       token = user.newToken;
 
       //guardarToken(user.newToken);
@@ -137,5 +137,17 @@ class ProviderApi extends ChangeNotifier {
     // } else {
     //   return false;
     //   }
+  }
+
+  Future listato() async {
+    http.Response response = await http.get(
+      Env.uriListado,
+      headers: {'Content-Type': 'application/json', 'x-token': tokenPuro},
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print(response.body);
+      final responsebody = loginResponseFromJson(response.body);
+    }
   }
 }

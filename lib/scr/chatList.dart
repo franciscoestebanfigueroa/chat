@@ -32,10 +32,10 @@ class ChatList extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () {
-                  //onLine.estadoLine = false;
-                  onLine.conectar = false;
-                  onLine.conectarSocket();
-                  // onLine.estadoLine = false;
+                  providerApi.listato();
+
+                  //onLine.conectar = false;
+                  //onLine.conectarSocket();
 
                   //  ProviderApi().eliminarToken();
 //
