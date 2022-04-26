@@ -12,37 +12,28 @@ class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Usuario> lista = [];
-    //   Usuario(
-    //       txt: [
-    //         'hola',
-    //         'mundo',
-    //         'que haces',
-    //       ],
-    //       nombre: 'Pancho',
-    //       id: ['1', '0', '1']),
-    //   Usuario(txt: [], nombre: 'Lara', id: ['2'], estado: true),
-    //   Usuario(txt: [], nombre: 'Caro', id: ['3']),
-    //   Usuario(txt: [], nombre: 'Esteban', id: ['4'])
-    // ];
+    
     final onLine = Provider.of<ProviderSocket>(context);
     final providerApi = Provider.of<ProviderApi>(context);
+    providerApi.listadoUser();
+    lista=providerApi.listado;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           actions: [
             TextButton(
                 onPressed: () {
-                  providerApi.listato();
+                  providerApi.listadoUser();
 
                   //onLine.conectar = false;
                   //onLine.conectarSocket();
 
                   //  ProviderApi().eliminarToken();
 //
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Login();
-                  }));
+                //  Navigator.pushReplacement(context,
+                //      MaterialPageRoute(builder: (context) {
+                //    return Login();
+                //  }));
                 },
                 child: const Icon(
                   Icons.power_off,

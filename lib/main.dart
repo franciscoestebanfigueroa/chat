@@ -17,7 +17,7 @@ class MyAppProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => ProviderSocket()),
-      ChangeNotifierProvider(create: (context) => ProviderApi()),
+      ChangeNotifierProvider(create: (context) => ProviderApi(),lazy:true ),
       ChangeNotifierProvider(
         create: (context) => ProviderDataChat(
             Usuario(uid: '', nombre: '', online: false, email: '')),

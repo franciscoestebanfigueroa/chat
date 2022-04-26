@@ -24,8 +24,9 @@ class ProviderSocket extends ChangeNotifier {
 
   bool get conectar => _conectar;
 
-  void conectarSocket() {
-    print('init soket');
+   conectarSocket() {
+    try {
+      print('init soket');
 
     io.Socket socket = io.io(
       Env.uriSocket,
@@ -48,7 +49,7 @@ class ProviderSocket extends ChangeNotifier {
       print('en if conectar false');
       socket.emit('online', false);
       socket.disconnect();
-      return;
+      return ;
     } else {
       socket.connect();
     }
@@ -65,5 +66,9 @@ class ProviderSocket extends ChangeNotifier {
       print('desconectand');
       estadoLine = false;
     });
+    } catch (e) {
+      print('no hay conexion');
+      return ;
+    }
   }
 }

@@ -12,6 +12,7 @@ class ProviderApi extends ChangeNotifier {
   late Usuario usuario; //
   bool _estadoBoton = true;
   static String tokenPuro = '';
+  List<Usuario> listado=[];      
 
   set token(String token) {
     tokenPuro = token;
@@ -45,7 +46,8 @@ class ProviderApi extends ChangeNotifier {
     Map<String, String> data = {"email": correo, 'password': pass};
     //final data = {"email": "pancho@pancho.com", 'password': '123456'};
 
-    estadoBoton = false;
+    try {
+      estadoBoton = false;
     await Future.delayed(const Duration(seconds: 1));
     final response = await http.post(
       Env.uriLogin,
@@ -72,6 +74,11 @@ class ProviderApi extends ChangeNotifier {
       print('error de credenciales');
       usuario = Usuario(nombre: '', email: '', online: false, uid: '0');
       estadoBoton = true;
+      return false;
+    }
+    } catch (e) {
+      print('no hay conexion');
+      estadoBoton=true;
       return false;
     }
   }
@@ -139,15 +146,28 @@ class ProviderApi extends ChangeNotifier {
     //   }
   }
 
-  Future listato() async {
+  Future listadoUser() async {
     http.Response response = await http.get(
       Env.uriListado,
       headers: {'Content-Type': 'application/json', 'x-token': tokenPuro},
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
-      print(response.body);
-      final responsebody = loginResponseFromJson(response.body);
+      //print(response.body);
+      final responsebody = jsonDecode(response.body);
+      final x=responsebody['usuarios'];
+    
+      
+
+      for (var item in x) {
+        
+        Usuario a=Usuario.fromJson(item);
+         listado.add(a);
+      }
+      
+       
+       print(listado.map((e) => e.email));       
     }
+    notifyListeners();
   }
 }
