@@ -62,8 +62,8 @@ class ProviderSocket extends ChangeNotifier {
       },
     );
     socket.onDisconnect((_) {
-      //se ejecuta cuando el servidor de desconecta
-      print('desconectand');
+      //se ejecuta cuando el servidor te desconecta o se desconecta
+      print('desconectando por token');
       estadoLine = false;
     });
     } catch (e) {

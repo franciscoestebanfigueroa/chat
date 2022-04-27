@@ -9,15 +9,24 @@ import 'package:http/http.dart' as http;
 
 class ProviderApi extends ChangeNotifier {
   //final _storage = FlutterSecureStorage();
-  late Usuario usuario; //
+   Usuario usuario=Usuario(nombre: '', email: '', online: false, uid: ''); //
   bool _estadoBoton = true;
-  static String tokenPuro = '';
-  List<Usuario> listado=[];      
-
-  set token(String token) {
-    tokenPuro = token;
+  static String _tokenPuro = '';
+  List<Usuario> listado=[];  
+  borrarListado(){
+listado.clear();
     notifyListeners();
+  }    
+static String get tokenPuro=>_tokenPuro;
+
+  static set tokenPuro(String token) {
+    _tokenPuro = token;
+    
+    print(' token puro $_tokenPuro');
+    
+    
   }
+  
   //static String get token=>_tokenPuro;
 
 //metodos estaticos dentro de la clase, no los voy a tener que instanciar
@@ -58,13 +67,14 @@ class ProviderApi extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       // print(response.body);
-      final user = loginResponseFromJson(response.body);
+     tokenPuro='';
+      LoginResponse user = loginResponseFromJson(response.body);
       usuario = user.usuario;
       print(usuario.nombre);
       //  print(usuario.email);
       //  print(usuario.uid);
       print(user.newToken);
-      token = user.newToken;
+      _tokenPuro = user.newToken;
 
       //guardarToken(user.newToken);
 
@@ -107,7 +117,7 @@ class ProviderApi extends ChangeNotifier {
       final user = loginResponseFromJson(response.body);
       print(user.usuario.nombre);
       print(user.newToken);
-      token = user.newToken;
+      tokenPuro = user.newToken;
       estadoBoton = true;
       // guardarToken(user.newToken);
       return true;
@@ -146,7 +156,7 @@ class ProviderApi extends ChangeNotifier {
     //   }
   }
 
-  Future listadoUser() async {
+  Future<bool> listadoUser() async {
     http.Response response = await http.get(
       Env.uriListado,
       headers: {'Content-Type': 'application/json', 'x-token': tokenPuro},
@@ -167,7 +177,13 @@ class ProviderApi extends ChangeNotifier {
       
        
        print(listado.map((e) => e.email));       
-    }
+    
     notifyListeners();
+    return true;
+    }
+    else{
+      return false;
+    }
+    
   }
 }

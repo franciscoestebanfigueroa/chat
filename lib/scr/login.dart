@@ -111,17 +111,20 @@ class _FormulariosLoginState extends State<_FormulariosLogin> {
                     ? () async {
                         final response = await provider.login(
 
-                            //controllerCorreo.text,
-
-                            //controllerPass.text);
-                            'pancho@pancho.com',
-                            '123456');
+                            controllerCorreo.text,
+                            controllerPass.text);
+                           // 'pancho@pancho.com',
+                           // '123456');
                         if (response) {
                           final conectarSocket = Provider.of<ProviderSocket>(
                               context,
                               listen: false);
+                           provider.borrarListado(); 
                           conectarSocket.conectar = true;
                           conectarSocket.conectarSocket();
+                          await Future.delayed(Duration(milliseconds: 900));
+                          await provider.listadoUser();
+                          
 
                           Navigator.pushReplacementNamed(context, 'chatList');
                         } else {
