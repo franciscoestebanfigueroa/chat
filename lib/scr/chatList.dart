@@ -8,28 +8,27 @@ import 'package:chat/scr/scr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Usuario> lista = [];
-    
+
     final onLine = Provider.of<ProviderSocket>(context);
     final providerApi = Provider.of<ProviderApi>(context);
-     lista=providerApi.listado;
+    lista = providerApi.listado;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           actions: [
             TextButton(
                 onPressed: () {
-                 // providerApi.listadoUser();
+                  // providerApi.listadoUser();
 
-                  onLine.conectar = false;
-                  onLine.conectarSocket();
+                  // onLine.conectarSocket();
+                  onLine.onOffSocket(false);
 
                   //  ProviderApi().eliminarToken();
-                    providerApi.borrarListado();
+                  providerApi.borrarListado();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
                     return Login();
@@ -82,9 +81,9 @@ class ChatList extends StatelessWidget {
         modal.dataChat = usr;
       },
       title: Text(usr.nombre),
-      subtitle: Text(usr.online ? 'Conectado':'Desconectado'),
+      subtitle: Text(usr.online ? 'Conectado' : 'Desconectado'),
       leading: CircleAvatar(
-          backgroundColor: usr.online ? Colors.green[300]:Colors.red[400],
+          backgroundColor: usr.online ? Colors.green[300] : Colors.red[400],
           child: Text(usr.nombre.substring(0, 2).toUpperCase())),
     );
   }

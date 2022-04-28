@@ -6,7 +6,8 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class ProviderSocket extends ChangeNotifier {
   bool _estadoConect = false;
-  bool _conectar = false;
+
+  late io.Socket socket;
   ProviderSocket() {
     //estadoSocket();
   }
@@ -17,58 +18,53 @@ class ProviderSocket extends ChangeNotifier {
     notifyListeners();
   }
 
-  set conectar(bool conectar) {
-    _conectar = conectar;
-    notifyListeners();
-  }
-
-  bool get conectar => _conectar;
-
-   conectarSocket() {
+  conectarSocket() {
     try {
       print('init soket');
 
-    io.Socket socket = io.io(
-      Env.uriSocket,
-      //{
-      //  'transports':['websocket'],
-      //  'autoConnect':true,
-      //  'forceNew':true,
-      //  'extraHeaders':{
-      //    'x-token':''
-      //  }
+      socket = io.io(
+        Env.uriSocket,
+        //{
+        //  'transports':['websocket'],
+        //  'autoConnect':true,
+        //  'forceNew':true,
+        //  'extraHeaders':{
+        //    'x-token':''
+        //  }
 
-      //}
-      io.OptionBuilder() //.enableForceNew()
-          .setTransports(['websocket'])
-          //.enableAutoConnect()
-          .setExtraHeaders({'x-token': ProviderApi.tokenPuro}).build(),
-    );
+        //}
+        io.OptionBuilder().enableForceNew().setTransports(['websocket'])
+            //.enableAutoConnect()
+            .setExtraHeaders({'x-token': ProviderApi.tokenPuro}).build(),
+      );
 
+      socket.onConnect(
+        (_) {
+          estadoLine = true;
+          print('conectadooo ');
+          socket.emit('online', true);
+          // return;
+        },
+      );
+      socket.onDisconnect((_) {
+        //se ejecuta cuando el servidor te desconecta o se desconecta
+        print('desconectando por token');
+        estadoLine = false;
+      });
+    } catch (e) {
+      print('no hay conexion');
+      return;
+    }
+  }
+
+  onOffSocket(bool conectar) {
     if (conectar == false) {
       print('en if conectar false');
       socket.emit('online', false);
       socket.disconnect();
-      return ;
+      return;
     } else {
       socket.connect();
-    }
-    socket.onConnect(
-      (_) {
-        estadoLine = true;
-        print('conectadooo ');
-        socket.emit('online', true);
-        // return;
-      },
-    );
-    socket.onDisconnect((_) {
-      //se ejecuta cuando el servidor te desconecta o se desconecta
-      print('desconectando por token');
-      estadoLine = false;
-    });
-    } catch (e) {
-      print('no hay conexion');
-      return ;
     }
   }
 }
