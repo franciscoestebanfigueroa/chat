@@ -1,6 +1,7 @@
 import 'dart:convert';
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'package:chat/models/model_listado.dart';
 import 'package:chat/models/model_response_login.dart';
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/statcs.dart/env.dart';
@@ -9,24 +10,23 @@ import 'package:http/http.dart' as http;
 
 class ProviderApi extends ChangeNotifier {
   //final _storage = FlutterSecureStorage();
-   Usuario usuario=Usuario(nombre: '', email: '', online: false, uid: ''); //
+  Usuario usuario = Usuario(nombre: '', email: '', online: false, uid: ''); //
   bool _estadoBoton = true;
   static String _tokenPuro = '';
-  List<Usuario> listado=[];  
-  borrarListado(){
-listado.clear();
+  List<Usuario> listado = [];
+  borrarListado() {
+    listado.clear();
     notifyListeners();
-  }    
-static String get tokenPuro=>_tokenPuro;
+  }
+
+  static String get tokenPuro => _tokenPuro;
 
   static set tokenPuro(String token) {
     _tokenPuro = token;
-    
+
     print(' token puro $_tokenPuro');
-    
-    
   }
-  
+
   //static String get token=>_tokenPuro;
 
 //metodos estaticos dentro de la clase, no los voy a tener que instanciar
@@ -57,38 +57,38 @@ static String get tokenPuro=>_tokenPuro;
 
     try {
       estadoBoton = false;
-    await Future.delayed(const Duration(seconds: 1));
-    final response = await http.post(
-      Env.uriLogin,
-      body: jsonEncode(data),
-      headers: {'Content-Type': 'application/json'},
-    );
-    print(response.statusCode);
+      await Future.delayed(const Duration(seconds: 1));
+      final response = await http.post(
+        Env.uriLogin,
+        body: jsonEncode(data),
+        headers: {'Content-Type': 'application/json'},
+      );
+      print(response.statusCode);
 
-    if (response.statusCode == 200) {
-      // print(response.body);
-     tokenPuro='';
-      LoginResponse user = loginResponseFromJson(response.body);
-      usuario = user.usuario;
-      print(usuario.nombre);
-      //  print(usuario.email);
-      //  print(usuario.uid);
-      print(user.newToken);
-      _tokenPuro = user.newToken;
+      if (response.statusCode == 200) {
+        // print(response.body);
+        tokenPuro = '';
+        LoginResponse user = loginResponseFromJson(response.body);
+        usuario = user.usuario;
+        print(usuario.nombre);
+        //  print(usuario.email);
+        //  print(usuario.uid);
+        print(user.newToken);
+        _tokenPuro = user.newToken;
 
-      //guardarToken(user.newToken);
+        //guardarToken(user.newToken);
 
-      estadoBoton = true;
-      return true;
-    } else {
-      print('error de credenciales');
-      usuario = Usuario(nombre: '', email: '', online: false, uid: '0');
-      estadoBoton = true;
-      return false;
-    }
+        estadoBoton = true;
+        return true;
+      } else {
+        print('error de credenciales');
+        usuario = Usuario(nombre: '', email: '', online: false, uid: '0');
+        estadoBoton = true;
+        return false;
+      }
     } catch (e) {
       print('no hay conexion');
-      estadoBoton=true;
+      estadoBoton = true;
       return false;
     }
   }
@@ -157,33 +157,35 @@ static String get tokenPuro=>_tokenPuro;
   }
 
   Future<bool> listadoUser() async {
-    http.Response response = await http.get(
-      Env.uriListado,
-      headers: {'Content-Type': 'application/json', 'x-token': tokenPuro},
-    );
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      //print(response.body);
-      final responsebody = jsonDecode(response.body);
-      final x=responsebody['usuarios'];
-    
-      
+    try {
+      http.Response response = await http.get(
+        Env.uriListado,
+        headers: {'Content-Type': 'application/json', 'x-token': tokenPuro},
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        //print(response.body);
+        //final responsebody = jsonDecode(response.body);
+        //final x = responsebody['usuarios'];
+        // otro farma con quicktype
+        final lusr = listadoChatFromJson(response.body);
+        listado = lusr.usuarios;
 
-      for (var item in x) {
-        
-        Usuario a=Usuario.fromJson(item);
-         listado.add(a);
+        //  for (var item in x) {
+        //    Usuario a = Usuario.fromJson(item);
+        //    listado.add(a);
+        //  }
+
+        print(listado.map((e) => e.email));
+
+        notifyListeners();
+        return true;
+      } else {
+        return false;
       }
-      
-       
-       print(listado.map((e) => e.email));       
-    
-    notifyListeners();
-    return true;
-    }
-    else{
+    } on Exception catch (e) {
+      print('fallo la consulta a la lista get usuarios');
       return false;
     }
-    
   }
 }

@@ -1,4 +1,5 @@
-import 'package:chat/alertas/alertas.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
 import 'package:chat/provider/provider_api.dart';
@@ -8,14 +9,23 @@ import 'package:chat/scr/scr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatList extends StatelessWidget {
+class ChatList extends StatefulWidget {
+  @override
+  State<ChatList> createState() => _ChatListState();
+}
+
+RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     List<Usuario> lista = [];
 
     final onLine = Provider.of<ProviderSocket>(context);
     final providerApi = Provider.of<ProviderApi>(context);
+
     lista = providerApi.listado;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -61,7 +71,18 @@ class ChatList extends StatelessWidget {
             ],
           ),
         ),
-        body: Container(
+        body: SmartRefresher(
+          controller: _refreshController,
+          enablePullDown: true,
+          enablePullUp: true,
+          header: const WaterDropMaterialHeader(),
+          onRefresh: () async {
+            // monitor network fetch
+            await Future.delayed(const Duration(milliseconds: 1000));
+            // if failed,use refreshFailed()
+            providerApi.listadoUser();
+            _refreshController.refreshCompleted();
+          },
           child: ListView.builder(
             itemCount: lista.length,
             itemBuilder: (context, index) {

@@ -6,11 +6,19 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class ProviderSocket extends ChangeNotifier {
   bool _estadoConect = false;
+  bool _actualizar = false; //lo usaremos para actualizar
 
   late io.Socket socket;
   ProviderSocket() {
     //estadoSocket();
   }
+
+  set actualizar(bool value) {
+    _actualizar = value;
+    notifyListeners();
+  }
+
+  bool get actualizar => _actualizar;
 
   bool get estadoLine => _estadoConect;
   set estadoLine(bool estado) {
@@ -43,6 +51,11 @@ class ProviderSocket extends ChangeNotifier {
           estadoLine = true;
           print('conectadooo ');
           socket.emit('online', true);
+          socket.on('actualizar', (data) {
+            print('info para actualizar estados automaticos');
+            actualizar = true;
+            return;
+          });
           // return;
         },
       );
