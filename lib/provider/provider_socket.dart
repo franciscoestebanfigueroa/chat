@@ -54,7 +54,6 @@ class ProviderSocket extends ChangeNotifier {
           socket.on('actualizar', (data) {
             print('info para actualizar estados automaticos');
             actualizar = true;
-            return;
           });
           // return;
         },

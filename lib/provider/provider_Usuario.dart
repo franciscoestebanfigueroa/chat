@@ -1,12 +1,22 @@
+import 'package:chat/models/modal_chat.dart';
+import 'package:chat/models/model_listado.dart';
 import 'package:chat/models/ususrio.dart';
 import 'package:flutter/foundation.dart';
 
 class ProviderDataChat extends ChangeNotifier {
   late Usuario _usuario;
-  bool _botonEnviar = false;
-  ProviderDataChat(Usuario usr) {
-    _usuario = usr;
+  List<MensajesChat> _listaMensajes = [];
+  List<MensajesChat> get listaMensajes => _listaMensajes;
+
+  void insertarMensajes(dynamic mensaje) {
+    _listaMensajes.insert(
+        0,
+        MensajesChat(
+            data: mensaje['data'], de: mensaje['de'], para: mensaje['para']));
+    notifyListeners();
   }
+
+  bool _botonEnviar = false;
 
   Usuario get dataChat => _usuario;
 

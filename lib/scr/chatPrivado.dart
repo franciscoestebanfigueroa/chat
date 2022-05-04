@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:chat/models/modal_chat.dart';
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
+import 'package:chat/provider/provider_api.dart';
+import 'package:chat/provider/provider_socket.dart';
 import 'package:chat/scr/scr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,9 +34,9 @@ class ChatPrivado extends StatelessWidget {
         body: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              CajaLectura(),
-              _CajaTexto(),
+            children: [
+              Chats(),
+              const _CajaTexto(),
             ],
           ),
         ),
@@ -42,36 +45,58 @@ class ChatPrivado extends StatelessWidget {
   }
 }
 
-class CajaLectura extends StatefulWidget {
-  const CajaLectura({
+class Chats extends StatefulWidget {
+  Chats({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<CajaLectura> createState() => _CajaLecturaState();
+  State<Chats> createState() => _ChatsState();
 }
 
-class _CajaLecturaState extends State<CajaLectura> {
+class _ChatsState extends State<Chats> {
+  @override
+  void initState() {
+    print('init caja lectura*****************');
+    final providerSocket = Provider.of<ProviderSocket>(context, listen: false);
+    final providerChat = Provider.of<ProviderDataChat>(context, listen: false);
+    providerSocket.socket.on('sala', (data) => _escuchar(data));
+    super.initState();
+  }
+
+  _escuchar(dynamic data) {
+    final providerChat = Provider.of<ProviderDataChat>(context, listen: false);
+
+    print('payload $data');
+
+    providerChat.insertarMensajes(data);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    final modal = Provider.of<ProviderDataChat>(context);
+    final providerChat = Provider.of<ProviderDataChat>(context);
+    final prviderApi = Provider.of<ProviderApi>(context);
+
+    final miUid = prviderApi.usuario.uid;
+    final usuario = providerChat.dataChat;
     return Flexible(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         color: Colors.blue[50],
         child: ListView.builder(
             reverse: true,
-            itemCount: modal.dataChat.nombre.length, //ver
+            itemCount: providerChat.listaMensajes.length, //ver
             itemBuilder: (context, index) {
-              return modal.dataChat.nombre[index] == '1'
-                  ? _Yo(modal, index)
-                  : _tu(modal, index);
+              return providerChat.listaMensajes[index].de == miUid
+                  ? _Yo(mensajesChat: providerChat.listaMensajes[index])
+                  : _tu(providerChat.listaMensajes[index]);
             }),
       ),
     );
   }
 
-  Widget _tu(ProviderDataChat modal, int index) {
+  Widget _tu(MensajesChat modal) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Align(
@@ -79,7 +104,7 @@ class _CajaLecturaState extends State<CajaLectura> {
         child: Chip(
           backgroundColor: Color(0xD44B9FEE),
           onDeleted: () {
-            modal.deleteTxt(index);
+            //modal.deleteTxt(index);
           },
           label: Padding(
             padding: const EdgeInsets.only(
@@ -89,7 +114,7 @@ class _CajaLecturaState extends State<CajaLectura> {
               bottom: 5,
             ),
             child: Text(
-              modal.dataChat.nombre[index],
+              modal.data,
               textAlign: TextAlign.right,
             ),
           ),
@@ -164,6 +189,14 @@ class _CajaTextoState extends State<_CajaTexto> {
   }
 
   void sen(ProviderDataChat modal) {
+    final providerSocket = Provider.of<ProviderSocket>(context, listen: false);
+    final providerApi = Provider.of<ProviderApi>(context, listen: false);
+    providerSocket.socket.emit('sala', {
+      'de': providerApi.usuario.uid.toString(),
+      'para': modal.dataChat.uid,
+      'data': controllerTF.text.toString()
+    });
+    print(controllerTF.text);
     modal.addTxt(controllerTF.text.toString(), rnd.nextInt(2).toString());
     controllerTF.clear();
     modal.botonEnviar = false;
@@ -173,9 +206,8 @@ class _CajaTextoState extends State<_CajaTexto> {
 }
 
 class _Yo extends StatefulWidget {
-  final index;
-  final modal;
-  _Yo(this.modal, this.index);
+  final MensajesChat mensajesChat;
+  _Yo({required this.mensajesChat});
 
   @override
   State<_Yo> createState() => _YoState();
@@ -192,7 +224,7 @@ class _YoState extends State<_Yo> {
         child: AnimatedContainer(
           curve: Curves.bounceIn,
           decoration: BoxDecoration(
-              color: Color.fromARGB(255, 131, 194, 144),
+              color: const Color.fromARGB(255, 131, 194, 144),
               borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.symmetric(
             horizontal: _random.nextInt(8).toDouble() + 8,
@@ -200,7 +232,7 @@ class _YoState extends State<_Yo> {
           ),
           duration: const Duration(milliseconds: 200),
           child: Text(
-            widget.modal.dataChat.txt[widget.index],
+            widget.mensajesChat.data,
             textAlign: TextAlign.right,
           ),
         ),
