@@ -55,13 +55,22 @@ class Chats extends StatefulWidget {
 }
 
 class _ChatsState extends State<Chats> {
+  late ProviderSocket providerSocket;
+
   @override
   void initState() {
     print('init caja lectura*****************');
-    final providerSocket = Provider.of<ProviderSocket>(context, listen: false);
+    providerSocket = Provider.of<ProviderSocket>(context, listen: false);
     final providerChat = Provider.of<ProviderDataChat>(context, listen: false);
     providerSocket.socket.on('sala', (data) => _escuchar(data));
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    providerSocket.socket.off('sala');
+    super.dispose();
   }
 
   _escuchar(dynamic data) {
