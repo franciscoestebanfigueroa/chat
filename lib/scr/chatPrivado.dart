@@ -1,11 +1,12 @@
 import 'dart:math';
 
-import 'package:chat/models/modal_chat.dart';
+import 'package:chat/models/model_chat.dart';
 import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
 import 'package:chat/provider/provider_api.dart';
 import 'package:chat/provider/provider_socket.dart';
 import 'package:chat/scr/scr.dart';
+import 'package:chat/services/get_historial.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,13 +57,15 @@ class Chats extends StatefulWidget {
 
 class _ChatsState extends State<Chats> {
   late ProviderSocket providerSocket;
-
+  late ProviderDataChat providerChat;
   @override
   void initState() {
     print('init caja lectura*****************');
     providerSocket = Provider.of<ProviderSocket>(context, listen: false);
-    final providerChat = Provider.of<ProviderDataChat>(context, listen: false);
-    providerSocket.socket.on('sala', (data) => _escuchar(data));
+    providerChat = Provider.of<ProviderDataChat>(context, listen: false);
+    //cargar historial
+
+    _escuchar();
 
     super.initState();
   }
@@ -70,16 +73,20 @@ class _ChatsState extends State<Chats> {
   @override
   void dispose() {
     providerSocket.socket.off('sala');
+    providerChat.listaMensajes.clear();
     super.dispose();
   }
 
-  _escuchar(dynamic data) {
+  _escuchar() async {
     final providerChat = Provider.of<ProviderDataChat>(context, listen: false);
+    List<MensajesChat> listHistorial =
+        await historial(providerChat.dataChat.uid, ProviderApi.tokenPuro);
+    providerChat.listaMensajes = listHistorial;
 
-    print('payload $data');
+    providerSocket.socket
+        .on('sala', (data) => providerChat.insertarMensajes(data));
 
-    providerChat.insertarMensajes(data);
-    setState(() {});
+    //setState(() {});
   }
 
   @override

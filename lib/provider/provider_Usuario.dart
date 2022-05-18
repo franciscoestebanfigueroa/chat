@@ -1,4 +1,4 @@
-import 'package:chat/models/modal_chat.dart';
+import 'package:chat/models/model_chat.dart';
 import 'package:chat/models/model_listado.dart';
 import 'package:chat/models/ususrio.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +7,10 @@ class ProviderDataChat extends ChangeNotifier {
   late Usuario _usuario;
   List<MensajesChat> _listaMensajes = [];
   List<MensajesChat> get listaMensajes => _listaMensajes;
+  set listaMensajes(List<MensajesChat> x) {
+    _listaMensajes = x;
+    notifyListeners();
+  }
 
   void insertarMensajes(dynamic mensaje) {
     _listaMensajes.insert(

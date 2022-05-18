@@ -1,4 +1,3 @@
-import 'package:chat/models/ususrio.dart';
 import 'package:chat/provider/provider_Usuario.dart';
 import 'package:chat/provider/provider_api.dart';
 import 'package:chat/provider/provider_socket.dart';
