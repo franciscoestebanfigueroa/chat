@@ -13,7 +13,7 @@ print("hola provider");
 
 DataModel get datos => data;
 
-set (DataModel datos){
+set datos (DataModel datos){
   data.x=datos.x;
   data.y=datos.y;
   data.z=datos.z;

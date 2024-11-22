@@ -45,13 +45,17 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final size = MediaQuery.of(context).size; 
+        final x = Provider.of<ProviderData>(context).datos;
+      
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
         title: const Text("Misil Baez"),),
       body: data(),
-
+      floatingActionButton: FloatingActionButton(onPressed: () { 
+        x.x=50;
+       },),
+      
       );
   }
 
